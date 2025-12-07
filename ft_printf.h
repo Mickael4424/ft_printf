@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouyer <mbouyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mickael <mickael@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 12:40:02 by mbouyer           #+#    #+#             */
-/*   Updated: 2025/12/05 17:20:31 by mbouyer          ###   ########.fr       */
+/*   Updated: 2025/12/07 18:29:24 by mickael          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 
 int ft_putchar(char c);
 int ft_putstr(char *str);
-int ft_putadress(int str);
+int ft_putadress(long int nb);
 int ft_putnbr(int nb);
-int ft_putnbr_base_l(int nb);
-int ft_putnbr_base_h(int nb);
+int ft_putnbr_base_xl(int nb);
+int ft_putnbr_base_xh(long int nb);
 size_t  ft_strlen(const char *str);
-int ft_putnbr_u(unsigned int nb);
+int ft_putnbr_u(int nb);
 
 #endif

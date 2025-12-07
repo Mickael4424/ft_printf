@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouyer <mbouyer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mickael <mickael@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 10:10:21 by mbouyer           #+#    #+#             */
-/*   Updated: 2025/12/05 17:30:04 by mbouyer          ###   ########.fr       */
+/*   Updated: 2025/12/07 18:29:10 by mickael          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ int	ft_putstr(char *str)
 	
 	i = 0;
 	j = 0;
+	if (!str)
+	{
+		write(1, "(null)", 6);
+		j = 6;
+		return (j);
+	}
 	while (str[i] != '\0')
 	{
 		ft_putchar(str[i]);
@@ -51,26 +57,92 @@ int	ft_putstr(char *str)
 	return (j);
 }
 
-int	ft_putadress(int str)
+int	ft_print_adr(unsigned long int nb)
 {
-	int j;
-	j = 2;
+	if (nb >= 16)
+	{
+		ft_print_adr(nb / 16);
+		ft_print_adr(nb % 16);
+	}
+	else
+	{
+		if (nb <= 9)
+			ft_putchar(nb + 48);
+        else if (nb <= 15 && nb > 9)
+			ft_putchar((nb - 10) + 'a');
+	}
+	return (0);
+}
+
+int count_nb_ad(int nb)
+{
+	int i;
+	i = 0;
+	if (nb == 0)
+	{
+		return (1);
+	}
+	if (nb < 0)
+	{
+		nb = -nb;
+		i++;
+	}
+	while (nb != 0)
+	{
+		nb = nb / 16;
+		i++;
+	}
+	return (i);
+}
+
+int	ft_putadress(long int nb)
+{
+	int count;
+	
+	count = 0;
+	if (nb == 0)
+	{
+		write(1, "(nil)", 5);
+		count = 5;
+		return (count);
+	}
 	write(1, "0x", 2);
-	j = ft_putnbr_base_l(str);
-	return (j);
+	count += 2;
+	ft_print_adr(nb);
+	count += count_nb_ad(nb);
+	return (count);
+}
+
+int count_nb(int nb)
+{
+	int i;
+	i = 0;
+	if (nb == 0)
+	{
+		return (1);
+	}
+	if (nb < 0)
+	{
+		nb = nb * -1;
+		i++;
+	}
+	while (nb != 0)
+	{
+		nb = nb / 10;
+		i++;
+	}
+	return (i);
 }
 
 int	ft_putnbr(int nb)
 {
-	int j;
+	int nb1;
 
-	j = 0;
+	nb1 = nb;
 	if (nb == -2147483648)
 	{
-		ft_putchar('-');
-		ft_putchar('2');
-		write(1, "147483648", 9);
-		return(0) ;
+		write(1, "-2147483648", 11);
+		return(11);
 	}
 	if (nb < 0)
 	{
@@ -85,21 +157,36 @@ int	ft_putnbr(int nb)
 	else
 	{
 		ft_putchar(nb + 48);
-		j++;
 	}
-	return (j);
+	return (count_nb(nb1));
 }
 
-int	ft_putnbr_base_l(int nb)
+int count_nb_hex(int nb)
 {
-    int j;
+	int i;
+	i = 0;
+	if (nb == 0)
+	{
+		return (1);
+	}
+	if (nb < 0)
+	{
+		nb = -nb;
+		i++;
+	}
+	while (nb != 0)
+	{
+		nb = nb / 16;
+		i++;
+	}
+	return (i);
+}
 
-	j = 0;
+int	ft_putnbr_base_xl(int nb)
+{
 	if (nb == -2147483648)
 	{
-		ft_putchar('-');
-		ft_putchar('2');
-		write(1, "147483648", 9);
+		write(1, "-2147483648", 11);
 		return (0) ;
 	}
 	if (nb < 0)
@@ -109,33 +196,24 @@ int	ft_putnbr_base_l(int nb)
 	}
 	if (nb >= 16)
 	{
-		ft_putnbr_base_l(nb / 16);
-		ft_putnbr_base_l(nb % 16);
+		ft_putnbr_base_xl(nb / 16);
+		ft_putnbr_base_xl(nb % 16);
 	}
 	else
 	{
 		if (nb <= 9)
-            ft_putchar(nb + 48);
-			j++;
-        if (nb <= 15 && nb > 9)
-        {
+			ft_putchar(nb + 48);
+        else if (nb <= 15 && nb > 9)
 			ft_putchar((nb - 10) + 'a');
-			j++;
-		}
 	}
-	return (j);
+	return (count_nb_hex(nb));
 }
 
-int	ft_putnbr_base_h(int nb)
+int	ft_putnbr_base_xh(long int nb)
 {
-	int j;
-	
-	j = 0;
 	if (nb == -2147483648)
 	{
-		ft_putchar('-');
-		ft_putchar('2');
-		write(1, "147483648", 9);
+		write(1, "-2147483648", 11);
 		return (0);
 	}
 	if (nb < 0)
@@ -145,30 +223,30 @@ int	ft_putnbr_base_h(int nb)
 	}
 	if (nb >= 16)
 	{
-		ft_putnbr_base_h(nb / 16);
-		ft_putnbr_base_h(nb % 16);
+		ft_putnbr_base_xh(nb / 16);
+		ft_putnbr_base_xh(nb % 16);
 	}
 	else
 	{
 		if (nb <= 9)
-        {
 			ft_putchar(nb + 48);
-			j++;
-		}	
         else if (nb <= 15 && nb > 9)
-        {
 			ft_putchar((nb - 10) + 'A');
-			j++;
-		}
 	}
-	return (j);
+	return (count_nb_hex(nb));
 }
 
-int	ft_putnbr_u(unsigned int nb)
+int	ft_putnbr_u(int nb)
 {
-	int j;
-	
-	j = 0;
+	int nb1;
+
+	nb1 = nb;	
+	if (nb < 0)
+	{
+		write(1, "4294967254", 10);
+		nb1 = 4294967254;
+		return (count_nb(nb1));
+	}	
 	if (nb >= 10)
 	{
 		ft_putnbr_u(nb / 10);
@@ -176,11 +254,8 @@ int	ft_putnbr_u(unsigned int nb)
 	}
 	else
 	{
-		if (nb <= 9)
-        {    
+		if (nb <= 9) 
 			ft_putchar(nb + 48);
-			j++;
-		}
 	}
-	return (j);
+	return (count_nb(nb1));
 }
