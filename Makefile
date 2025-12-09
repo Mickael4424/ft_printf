@@ -6,15 +6,14 @@
 #    By: mbouyer <mbouyer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/06 11:12:16 by mbouyer           #+#    #+#              #
-#    Updated: 2025/12/05 13:09:18 by mbouyer          ###   ########.fr        #
+#    Updated: 2025/12/08 11:49:49 by mbouyer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRCS = ft_printf.c ft_printf_utils.c
-
+SRCS = ft_printf.c ft_utils_1.c ft_utils_2.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${NAME}
@@ -33,4 +32,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:	all clean fclean re bonus
+.PHONY:	all clean fclean re
